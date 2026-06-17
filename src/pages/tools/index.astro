@@ -1,0 +1,9 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ToolsIndex from '../../components/tools/ToolsIndex.tsx';
+---
+
+<BaseLayout title="Tools" description="Small interactive web tools, built for the browser.">
+  <!-- Static React component (no client directive = zero JS shipped). -->
+  <ToolsIndex />
+</BaseLayout>

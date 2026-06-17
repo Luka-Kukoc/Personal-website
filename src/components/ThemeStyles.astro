@@ -1,0 +1,53 @@
+---
+/**
+ * Emits the theme config as CSS custom properties on :root.
+ * Everything else in the site reads these via var(--...).
+ * Edit values in `src/config/theme.ts`, not here.
+ *
+ * We build the CSS as a plain string and inject it with set:html so the
+ * variables land directly on :root (no scoping indirection).
+ */
+import { theme } from '../config/theme';
+
+const c = theme.colors;
+const u = theme.spacingUnit;
+const glow = theme.effects.glow ? '1' : '0';
+
+const css = `:root {
+  --color-bg: ${c.bg};
+  --color-bg-alt: ${c.bgAlt};
+  --color-surface: ${c.surface};
+  --color-surface-alt: ${c.surfaceAlt};
+  --color-border: ${c.border};
+  --color-text: ${c.text};
+  --color-text-muted: ${c.textMuted};
+  --color-primary: ${c.primary};
+  --color-secondary: ${c.secondary};
+  --color-success: ${c.success};
+  --color-warning: ${c.warning};
+
+  --font-sans: ${theme.fonts.sans};
+  --font-mono: ${theme.fonts.mono};
+
+  --radius: ${theme.radius};
+  --max-width: ${theme.maxWidth};
+
+  --space-xs: ${u * 0.5}px;
+  --space-sm: ${u}px;
+  --space-md: ${u * 2}px;
+  --space-lg: ${u * 3}px;
+  --space-xl: ${u * 5}px;
+  --space-2xl: ${u * 8}px;
+  --space-3xl: ${u * 13}px;
+
+  --glow-strength: ${glow};
+  --glow-primary: 0 0 calc(8px * var(--glow-strength)) color-mix(in srgb, var(--color-primary) 70%, transparent),
+                  0 0 calc(20px * var(--glow-strength)) color-mix(in srgb, var(--color-primary) 35%, transparent);
+  --glow-secondary: 0 0 calc(8px * var(--glow-strength)) color-mix(in srgb, var(--color-secondary) 70%, transparent),
+                    0 0 calc(20px * var(--glow-strength)) color-mix(in srgb, var(--color-secondary) 35%, transparent);
+  --text-glow-primary: 0 0 calc(10px * var(--glow-strength)) color-mix(in srgb, var(--color-primary) 60%, transparent);
+  --text-glow-secondary: 0 0 calc(10px * var(--glow-strength)) color-mix(in srgb, var(--color-secondary) 60%, transparent);
+}`;
+---
+
+<style is:global set:html={css}></style>

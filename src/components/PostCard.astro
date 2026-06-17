@@ -1,0 +1,83 @@
+---
+import { Image } from 'astro:assets';
+
+interface Props {
+  href: string;
+  title: string;
+  description: string;
+  pubDate: Date;
+  tags?: string[];
+  cover?: ImageMetadata;
+}
+const { href, title, description, pubDate, tags = [], cover } = Astro.props;
+const dateStr = pubDate.toLocaleDateString('en-US', {
+  year: 'numeric', month: 'short', day: '2-digit',
+});
+---
+
+<a href={href} class="card">
+  {cover && (
+    <div class="card__media">
+      <Image src={cover} alt={title} width={720} height={360} class="card__img" />
+    </div>
+  )}
+  <div class="card__body">
+    <time class="card__date" datetime={pubDate.toISOString()}>{dateStr}</time>
+    <h3 class="card__title">{title}</h3>
+    <p class="card__desc">{description}</p>
+    {tags.length > 0 && (
+      <ul class="card__tags">
+        {tags.map((t) => <li class="tag">#{t}</li>)}
+      </ul>
+    )}
+    <span class="card__more">read &rarr;</span>
+  </div>
+</a>
+
+<style>
+  .card {
+    display: flex;
+    flex-direction: column;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    color: var(--color-text);
+    height: 100%;
+  }
+  .card:hover {
+    border-color: var(--color-primary);
+    transform: translateY(-3px);
+    box-shadow: var(--glow-primary);
+    text-shadow: none;
+  }
+  .card__media { aspect-ratio: 2 / 1; overflow: hidden; border-bottom: 1px solid var(--color-border); }
+  .card__img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .card__body { padding: var(--space-lg); display: flex; flex-direction: column; gap: var(--space-sm); flex: 1; }
+  .card__date {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    color: var(--color-secondary);
+  }
+  .card__title { font-size: 1.25rem; margin: 0; }
+  .card:hover .card__title { color: var(--color-primary); }
+  .card__desc { color: var(--color-text-muted); font-size: 0.95rem; margin: 0; flex: 1; }
+  .card__tags { display: flex; flex-wrap: wrap; gap: var(--space-sm); list-style: none; }
+  .tag {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--color-text-muted);
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    padding: 0.1em 0.7em;
+  }
+  .card__more {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+    color: var(--color-primary);
+    margin-top: var(--space-xs);
+  }
+</style>

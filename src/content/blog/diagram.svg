@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 480" width="1080" height="480">
+  <rect width="1080" height="480" fill="#0d0d14"/>
+  <g font-family="monospace" font-size="22" fill="#e8e8f2" text-anchor="middle">
+    <g>
+      <rect x="80" y="190" width="220" height="100" rx="4" fill="#12121b" stroke="#ff2733" stroke-width="2"/>
+      <text x="190" y="245">markdown.md</text>
+    </g>
+    <g>
+      <rect x="430" y="190" width="220" height="100" rx="4" fill="#12121b" stroke="#1fe5ff" stroke-width="2"/>
+      <text x="540" y="245">Astro build</text>
+    </g>
+    <g>
+      <rect x="780" y="190" width="220" height="100" rx="4" fill="#12121b" stroke="#22ff9c" stroke-width="2"/>
+      <text x="890" y="245">static HTML</text>
+    </g>
+  </g>
+  <g stroke="#8b8ba3" stroke-width="2" marker-end="url(#arrow)">
+    <line x1="300" y1="240" x2="425" y2="240"/>
+    <line x1="650" y1="240" x2="775" y2="240"/>
+  </g>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0 0 L8 3 L0 6 z" fill="#8b8ba3"/>
+    </marker>
+  </defs>
+</svg>

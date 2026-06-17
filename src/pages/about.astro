@@ -1,0 +1,91 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../config/site';
+
+// Edit this page's content freely — it's plain markup.
+const stack = ['TypeScript', 'Astro', 'React', 'Node', 'Python', 'Postgres'];
+---
+
+<BaseLayout title="About" description="Who I am and what I build.">
+  <div class="container about">
+    <header class="page-head flow">
+      <p class="kicker">// whoami</p>
+      <h1>About</h1>
+    </header>
+
+    <div class="about__grid">
+      <div class="flow about__bio">
+        <p>
+          Hi — I'm <strong>{site.author}</strong>. I build software and write about
+          it here. This site is my corner of the net: a blog, a handful of
+          interactive tools, and the occasional experiment.
+        </p>
+        <p class="muted">
+          Replace this copy with your own story — what you work on, what you're
+          into, and what you want people to reach out about.
+        </p>
+
+        <h2>Stack</h2>
+        <ul class="chips">
+          {stack.map((s) => <li class="chip">{s}</li>)}
+        </ul>
+
+        <h2>Contact</h2>
+        <p>
+          The fastest way to reach me is email:
+          <a href={`mailto:${site.email}`}>{site.email}</a>.
+        </p>
+        <div class="about__socials">
+          {site.socials.map((s) => (
+            <a href={s.href} class="btn btn--ghost" target="_blank" rel="noopener noreferrer">
+              {s.label}
+            </a>
+          ))}
+        </div>
+      </div>
+
+      <aside class="about__card panel">
+        <p class="kicker">// status</p>
+        <dl class="stats">
+          <div><dt>location</dt><dd>Earth</dd></div>
+          <div><dt>role</dt><dd>Developer</dd></div>
+          <div><dt>open to</dt><dd>collabs & chats</dd></div>
+        </dl>
+      </aside>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .page-head { margin-bottom: var(--space-xl); }
+  .about__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
+  }
+  @media (min-width: 820px) {
+    .about__grid { grid-template-columns: 2fr 1fr; align-items: start; }
+  }
+  .about__bio { font-size: 1.05rem; }
+  .about__bio h2 { margin-top: var(--space-xl); }
+  .chips { display: flex; flex-wrap: wrap; gap: var(--space-sm); list-style: none; }
+  .chip {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: 0.25em 0.7em;
+    color: var(--color-secondary);
+  }
+  .about__socials { display: flex; gap: var(--space-md); flex-wrap: wrap; margin-top: var(--space-md); }
+  .about__card { position: sticky; top: 88px; }
+  .stats { margin-top: var(--space-md); display: grid; gap: var(--space-md); }
+  .stats dt {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-muted);
+  }
+  .stats dd { font-family: var(--font-mono); color: var(--color-text); }
+</style>

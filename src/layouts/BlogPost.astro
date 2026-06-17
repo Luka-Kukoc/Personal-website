@@ -1,0 +1,104 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from './BaseLayout.astro';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+}
+const { post } = Astro.props;
+const { title, description, pubDate, updatedDate, tags, cover, coverAlt } = post.data;
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+---
+
+<BaseLayout title={title} description={description}>
+  <article class="container post">
+    <header class="post__header flow">
+      <a href="/blog" class="post__back">&larr; all posts</a>
+      <div class="post__meta">
+        <time datetime={pubDate.toISOString()}>{fmt(pubDate)}</time>
+        {updatedDate && <span class="muted">· updated {fmt(updatedDate)}</span>}
+      </div>
+      <h1>{title}</h1>
+      <p class="post__desc muted">{description}</p>
+      {tags && tags.length > 0 && (
+        <ul class="post__tags">
+          {tags.map((t) => <li class="tag">#{t}</li>)}
+        </ul>
+      )}
+    </header>
+
+    {cover && (
+      <figure class="post__cover">
+        <Image src={cover} alt={coverAlt ?? title} width={1080} height={540} />
+      </figure>
+    )}
+
+    <div class="post__content flow">
+      <slot />
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .post { max-width: 760px; }
+  .post__back {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+  }
+  .post__back:hover { color: var(--color-primary); }
+  .post__meta {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--color-secondary);
+    display: flex;
+    gap: var(--space-sm);
+  }
+  .post__desc { font-size: 1.05rem; }
+  .post__tags { display: flex; flex-wrap: wrap; gap: var(--space-sm); list-style: none; }
+  .tag {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--color-text-muted);
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    padding: 0.1em 0.7em;
+  }
+  .post__cover {
+    margin-block: var(--space-xl);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .post__cover :global(img) { width: 100%; height: auto; display: block; }
+
+  /* Markdown body styling */
+  .post__content { font-size: 1.02rem; }
+  .post__content :global(h2) { margin-top: var(--space-xl); }
+  .post__content :global(h3) { margin-top: var(--space-lg); }
+  .post__content :global(img) {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    margin-block: var(--space-md);
+  }
+  .post__content :global(blockquote) {
+    border-left: 3px solid var(--color-secondary);
+    padding-left: var(--space-md);
+    color: var(--color-text-muted);
+    font-style: italic;
+  }
+  .post__content :global(ul),
+  .post__content :global(ol) { padding-left: var(--space-lg); margin-bottom: var(--space-md); }
+  .post__content :global(li) { margin-bottom: var(--space-xs); }
+  .post__content :global(hr) {
+    border: none;
+    border-top: 1px solid var(--color-border);
+    margin-block: var(--space-xl);
+  }
+  .post__content :global(a) { text-decoration: underline; text-underline-offset: 3px; }
+</style>

@@ -1,0 +1,18 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import GlitchText from '../components/GlitchText.astro';
+---
+
+<BaseLayout title="404" description="Page not found.">
+  <div class="container nf">
+    <p class="kicker">// signal lost</p>
+    <h1 class="nf__code"><GlitchText text="404" as="span" /></h1>
+    <p class="muted">The page you're looking for dropped off the grid.</p>
+    <a href="/" class="btn">Back to home</a>
+  </div>
+</BaseLayout>
+
+<style>
+  .nf { text-align: center; padding-block: var(--space-3xl); display: flex; flex-direction: column; align-items: center; gap: var(--space-md); }
+  .nf__code { font-size: clamp(4rem, 18vw, 9rem); margin: 0; }
+</style>

@@ -1,0 +1,49 @@
+---
+import { site } from '../config/site';
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="container footer__inner">
+    <span class="footer__copy">
+      © {year} {site.author} <span class="footer__sep">//</span> built with Astro
+    </span>
+    <div class="footer__socials">
+      {site.socials.map((s) => (
+        <a href={s.href} class="footer__link" target="_blank" rel="noopener noreferrer">
+          {s.label}
+        </a>
+      ))}
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    border-top: 1px solid var(--color-border);
+    background: var(--color-bg-alt);
+    padding-block: var(--space-lg);
+  }
+  .footer__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-md);
+    flex-wrap: wrap;
+  }
+  .footer__copy {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+  }
+  .footer__sep { color: var(--color-primary); }
+  .footer__socials { display: flex; gap: var(--space-md); }
+  .footer__link {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+  .footer__link:hover { color: var(--color-secondary); }
+</style>

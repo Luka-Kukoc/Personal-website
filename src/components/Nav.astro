@@ -1,0 +1,139 @@
+---
+import { site } from '../config/site';
+
+const path = Astro.url.pathname;
+// Active when exact match, or when a section page (e.g. /blog/post) is under it.
+function isActive(href: string) {
+  if (href === '/') return path === '/';
+  return path === href || path.startsWith(href + '/');
+}
+---
+
+<header class="nav">
+  <div class="container nav__inner">
+    <a href="/" class="nav__brand">
+      <span class="nav__bracket">[</span>{site.title}<span class="nav__bracket">]</span>
+    </a>
+
+    <nav class="nav__links" aria-label="Primary">
+      {site.nav.map((item) => (
+        <a
+          href={item.href}
+          class:list={['nav__link', { 'nav__link--active': isActive(item.href) }]}
+          aria-current={isActive(item.href) ? 'page' : undefined}
+        >
+          {item.label}
+        </a>
+      ))}
+    </nav>
+
+    <button class="nav__toggle" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<style>
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: color-mix(in srgb, var(--color-bg) 82%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--color-border);
+  }
+  .nav__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+  }
+  .nav__brand {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 0.08em;
+    color: var(--color-text);
+  }
+  .nav__brand:hover { color: var(--color-text); text-shadow: none; }
+  .nav__bracket {
+    color: var(--color-primary);
+    text-shadow: var(--text-glow-primary);
+  }
+  .nav__links {
+    display: flex;
+    gap: var(--space-lg);
+  }
+  .nav__link {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    position: relative;
+    padding-block: var(--space-xs);
+  }
+  .nav__link::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 0;
+    height: 2px;
+    background: var(--color-primary);
+    box-shadow: var(--glow-primary);
+    transition: width 0.2s ease;
+  }
+  .nav__link:hover { color: var(--color-text); text-shadow: none; }
+  .nav__link:hover::after,
+  .nav__link--active::after { width: 100%; }
+  .nav__link--active { color: var(--color-text); }
+
+  .nav__toggle {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: var(--space-xs);
+  }
+  .nav__toggle span {
+    width: 24px;
+    height: 2px;
+    background: var(--color-primary);
+    box-shadow: var(--glow-primary);
+    transition: transform 0.2s ease, opacity 0.2s ease;
+  }
+
+  @media (max-width: 640px) {
+    .nav__toggle { display: flex; }
+    .nav__links {
+      position: absolute;
+      top: 64px;
+      left: 0;
+      right: 0;
+      flex-direction: column;
+      gap: 0;
+      background: var(--color-bg-alt);
+      border-bottom: 1px solid var(--color-border);
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.25s ease;
+    }
+    .nav__links--open { max-height: 320px; }
+    .nav__link {
+      padding: var(--space-md) var(--space-lg);
+      border-top: 1px solid var(--color-border);
+    }
+  }
+</style>
+
+<script>
+  const toggle = document.querySelector('.nav__toggle');
+  const links = document.querySelector('.nav__links');
+  toggle?.addEventListener('click', () => {
+    const open = links?.classList.toggle('nav__links--open');
+    toggle.setAttribute('aria-expanded', String(!!open));
+  });
+</script>
